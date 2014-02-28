@@ -94,12 +94,11 @@ def batch_upload_transcribe():
 
 def download_transcript(media_uuid):
     media_item = Media.get(client=client, uuid=media_uuid)
-    print media_item.current_transcript
 
-    transcript = Transcript.get(client=client, uuid=media_item.current_transcript['uuid'], format='json')
+    transcript = Transcript.get(client=client, uuid=media_item.current_transcript['uuid'], format='xml')
     if not os.path.exists(settings.get('base','path.local.scripts.output')):
         os.makedirs(settings.get('base','path.local.scripts.output'))
-    f = open("%s/%s.srt" % (settings.get('base','path.local.scripts.output'), media_item.title), 'w')
+    f = open("%s/%s.srt" % (settings.get('base','path.local.scripts.output'), ('_').join(media_item.title.split('/')[4:7])), 'w')
     f.write(transcript.content)
 
 
